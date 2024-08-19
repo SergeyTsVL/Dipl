@@ -3,8 +3,12 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import ImageFeed
-from .utils import process_image, process_video
+from .utils import process_image
 from .forms import ImageFeedForm
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
+# Импортируйте здесь свою функцию
+from .recognize import recognize_function
 
 
 def home(request):
@@ -55,13 +59,6 @@ def process_image_feed(request, feed_id):
 
 
 @login_required
-def process_video_feed(request, feed_id_vid):
-    video_feed = get_object_or_404(ImageFeed, id=feed_id_vid, user=request.user)
-    process_video(feed_id_vid)  # Consider handling this asynchronously
-    return redirect('object_detection:dashboard')
-
-
-@login_required
 def add_image_feed(request):
     if request.method == 'POST':
         form = ImageFeedForm(request.POST, request.FILES)
@@ -75,26 +72,21 @@ def add_image_feed(request):
     return render(request, 'object_detection/add_image_feed.html', {'form': form})
 
 @login_required
-def add_video_feed(request):
-    if request.method == 'POST':
-        form = ImageFeedForm(request.POST, request.FILES)
-        if form.is_valid():
-            video_feed = form.save(commit=False)
-            video_feed.user = request.user
-            video_feed.save()
-            return redirect('object_detection:dashboard')
-    else:
-        form = ImageFeedForm()
-    return render(request, 'object_detection/add_video_feed.html', {'form': form})
-
-@login_required
 def delete_image(request, image_id):
     image = get_object_or_404(ImageFeed, id=image_id, user=request.user)  # Ensuring only the owner can delete
     image.delete()
     return redirect('object_detection:dashboard')
 
-# python manage.py makemigrations
-# python manage.py sqlmigrate blog
-# python manage.py createsuperuser
+@login_required
+def index(request):
+    if request.method == 'POST' and 'run_script' in request.POST:
+        # Вызов функции из вашего скрипта
+        recognize_function()
+
+        # Перенаправление пользователя обратно на ту же страницу или на другую
+        return HttpResponseRedirect(reverse('object_detection:dashboard'))
+
+    # Если это GET-запрос, просто отображаем страницу
+    return render(request, 'object_detection/dashboard.html')
 # cd detection_site
 # python manage.py runserver
