@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<form action="{% url 'object_detection:video' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" name="run_script" class="btn btn-primary mb-3">Распознавание лица</button>
+</form>
+</body>
+{% block content %}
+    <video controls>
+        <source src="{{ video }}" type="video/mp4">
+        Ваш браузер не поддерживает видео тег.
+    </video>
+{% endblock %}
+
+</html>

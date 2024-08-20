@@ -1,13 +1,21 @@
 {% extends "object_detection/base.html" %}
 
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
 {% block content %}
-<h2>Dashboard</h2>
-<a href="{% url 'object_detection:add_image_feed' %}" class="btn btn-primary mb-3">Add Image</a>
+
+<h2>Панель управления</h2>
+
+<a href="{% url 'object_detection:add_image_feed' %}" class="btn btn-primary mb-3">Добавить изображение</a>
 
 {% for feed in image_feeds %}
-<div class="card mb-3">
-    <div class="card-header">
-        <a href="{% url 'object_detection:process_feed' feed.id %}" class="btn btn-secondary">Process Image</a>
+
+<div class="card mb-3 content-block">
+    <div class="card-mb-3">
+        <a href="{% url 'object_detection:process_feed' feed.id %}" class="btn btn-secondary">Изображение процесса</a>
     </div>
     <div class="card-body">
         <a href="{{ feed.image.url }}" target="_blank">
@@ -26,13 +34,14 @@
     </div>
     <form action="{% url 'object_detection:delete_image' feed.id %}" method="post">
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button type="submit">Удалить</button>
     </form>
 </div>
 {% endfor %}
-<form action="{% url 'object_detection:index' %}" method="post">
+
+<form action="{% url 'object_detection:video' %}" method="post">
     {% csrf_token %}
-    <button type="submit" name="run_script">Запустить скрипт</button>
+    <button type="submit" name="run_script" class="btn btn-primary mb-3">Распознавание лица</button>
 </form>
 
 {% endblock %}

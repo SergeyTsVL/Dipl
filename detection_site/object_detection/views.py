@@ -3,12 +3,11 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import ImageFeed
-from .utils import process_image
+from .utils import process_image, recognize_function
 from .forms import ImageFeedForm
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 # Импортируйте здесь свою функцию
-from .recognize import recognize_function
 
 
 def home(request):
@@ -78,7 +77,7 @@ def delete_image(request, image_id):
     return redirect('object_detection:dashboard')
 
 @login_required
-def index(request):
+def video(request):
     if request.method == 'POST' and 'run_script' in request.POST:
         # Вызов функции из вашего скрипта
         recognize_function()
@@ -86,7 +85,11 @@ def index(request):
         # Перенаправление пользователя обратно на ту же страницу или на другую
         return HttpResponseRedirect(reverse('object_detection:dashboard'))
 
+        # video_path = "/path/to/recognize_function.mp4"
+        # return render(request, 'video.html', {'video_path': video_path})
+
     # Если это GET-запрос, просто отображаем страницу
-    return render(request, 'object_detection/dashboard.html')
+    return render(request, 'object_detection/video.html')
+    # return render(request, 'object_detection/dashboard.html')
 # cd detection_site
 # python manage.py runserver

@@ -1,11 +1,12 @@
 {% extends "object_detection/base.html" %}
 
 {% block content %}
-<h2>Login</h2>
+<h2>Логин</h2>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button class="btn btn-primary mb-3" type="submit">Логин</button>
 </form>
-<a href="{% url 'object_detection:register' %}">Register</a>
+<a href="{% url 'object_detection:register' %}" class="btn btn-primary mb-3" >Регистрация</a>
 {% endblock %}
