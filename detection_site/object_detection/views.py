@@ -85,9 +85,6 @@ def video(request):
         # Перенаправление пользователя обратно на ту же страницу или на другую
         return HttpResponseRedirect(reverse('object_detection:dashboard'))
 
-        # video_path = "/path/to/recognize_function.mp4"
-        # return render(request, 'video.html', {'video_path': video_path})
-
     # Если это GET-запрос, просто отображаем страницу
     return render(request, 'object_detection/video.html')
     # return render(request, 'object_detection/dashboard.html')

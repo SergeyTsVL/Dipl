@@ -90,4 +90,3 @@ def recognize_function():
 
     cv2.destroyAllWindows()
     source.release()
-# recognize_function()
