@@ -42,6 +42,7 @@
 <form action="{% url 'object_detection:video' %}" method="post">
     {% csrf_token %}
     <button type="submit" name="run_script" class="btn btn-primary mb-3">Распознавание лица</button>
+    <p>Для отключения распознавания лиц нажмите "q" (не забудьте переключиться на английский язык)</p>
 </form>
 
 {% endblock %}

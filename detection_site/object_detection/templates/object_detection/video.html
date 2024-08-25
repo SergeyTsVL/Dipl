@@ -1,21 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 
 </head>
-<body>
+
 <form action="{% url 'object_detection:video' %}" method="post">
     {% csrf_token %}
     <button type="submit" name="run_script" class="btn btn-primary mb-3">Распознавание лица</button>
 </form>
+<style>
+#container {
+	margin: 0px auto;
+	width: 500px;
+	height: 375px;
+	border: 10px #333 solid;
+}
+#videoElement {
+	width: 500px;
+	height: 375px;
+	background-color: #666;
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+	<video autoplay="true" id="videoElement">
+
+	</video>
+</div>
+<script>
+	var video = document.querySelector("#videoElement");
+
+	if (navigator.mediaDevices.getUserMedia) {
+	  navigator.mediaDevices.getUserMedia({ video: true })
+		.then(function (stream) {
+		  video.srcObject = stream;
+		})
+		.catch(function (err0r) {
+		  console.log("Something went wrong!");
+		});
+	}
+
+</script>
 </body>
-{% block content %}
-    <video controls>
-        <source src="{{ video }}" type="video/mp4">
-        Ваш браузер не поддерживает видео тег.
-    </video>
-{% endblock %}
+
 
 </html>
